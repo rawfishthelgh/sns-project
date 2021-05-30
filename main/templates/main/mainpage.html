@@ -2,20 +2,6 @@
 {% load static %}
 
 {% block content %}
-<h2><a href="{%url 'new'%}">글쓰기</a></h2>
-<h1>글 목록<h1>
-
-<div>
-    {% for post in posts %}
-    <div>
-        <h3>{{post.title}}</h3>
-        {{post.writer}}<br>
-        {{post.summary}}
-        <a href="{%url 'detail' post.id %}">...자세히</a>
-        <br>
-    </div>
-    {%endfor%}
-</div>
 
 <p class="text-start">#멋사이건회</p>
 <p class="text-center fs-1"><h1 id="title">[오피셜] 동국대 이xx 학생 멋사 3주차 과제 제출</h1></p><br>
