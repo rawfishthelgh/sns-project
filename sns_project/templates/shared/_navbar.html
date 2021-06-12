@@ -27,6 +27,20 @@
             <li><a class="dropdown-item" href="{% url 'main:new' %}">글 작성하기</a></li>
           </ul>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Account
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% if user.is_authenticated %}
+            <li><a class="dropdown-item" href="{% url 'users:mypage' %}">Mypage</a></li>
+            <li><a class="dropdown-item" href="{% url 'account_logout' %}">logout</a></li>
+            {% else %}
+            <li><a class="dropdown-item" href="{%url 'account_login'%}">login</a></li>
+            <li><a class="dropdown-item" href="{%url 'account_signup'%}">signup</a></li>
+            {% endif %}
+          </ul>
+        </li>
     </div>
     <span class="navbar-text">
       @rawfishthelgh instagram follow plz
