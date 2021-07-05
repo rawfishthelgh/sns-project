@@ -7,16 +7,16 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" onClick="location.href='/first'">유년</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'main:first'%}">유년</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" onClick="location.href='/second'">청소년</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'main:second'%}">청소년</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" onClick="location.href='/third'">복학전</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'main:third'%}">복학전</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" onClick="location.href='/fourth'">복학후</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'main:fourth'%}">복학후</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,14 +36,14 @@
             <li><a class="dropdown-item" href="{% url 'users:mypage' %}">Mypage</a></li>
             <li><a class="dropdown-item" href="{% url 'account_logout' %}">logout</a></li>
             {% else %}
-            <li><a class="dropdown-item" href="{%url 'account_login'%}">login</a></li>
-            <li><a class="dropdown-item" href="{%url 'account_signup'%}">signup</a></li>
+            <li><a class="dropdown-item" href="{% url 'account_login'%}">login</a></li>
+            <li><a class="dropdown-item" href="{% url 'account_signup'%}">signup</a></li>
             {% endif %}
           </ul>
         </li>
     </div>
     <span class="navbar-text">
-      @rawfishthelgh instagram follow plz
+      <a href="https://www.instagram.com/rawfishthelgh/">@rawfishthelgh</a>
     </span>
   </div>
 </nav>
