@@ -35,7 +35,7 @@
     <div>
         작성자 : {{comment.writer}}<br>
         {{comment.content}}
-        <a href="{% url 'main:edit_comment' comment.id %}">댓글수정</a>
+        <a href="{% url 'main:edit_comment' post.id comment.id %}">댓글수정</a>
         <a href="{% url 'main:delete_comment' comment.id %}">댓글삭제</a>
         <br><hr>
     </div>
