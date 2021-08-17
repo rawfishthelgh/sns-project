@@ -22,7 +22,63 @@
 <p>{{post.body}}</p>
 <a href="{%url 'main:edit' post.id%}">수정하기</a>
 <a href="{%url 'main:delete' post.id%}">삭제하기</a>
+<div>
+<!-- 4. show.html 수정하기 -->
+<!--좋아요 작성-->
+<span href="#" class="like" name ="{{post.name}}" value="Like"> 
 
+    {% comment %} 만약 유저가 좋아요를 눌렀다면 채운 하트로 변경 {% endcomment %}
+    {% if user in post.like_user_set.all %}
+        <div class="alt-service-icon">
+            <i class="fas fa-heart" id ="like-icon" style="color:red;"></i>
+         </div> 
+    {% comment %} 아니면 비워진 하트        {% endcomment %}
+    {% else %}
+
+        <div class="alt-service-icon">
+             <i class="far fa-heart" id ="like-icon" style="color:red;"></i> 
+        </div>
+
+     {% endif %}
+
+     <span id="count-{{ post.id }}" class="alt-services-title font-alt"> 
+        좋아요 
+        {% if post.like_count == 0 %} 
+            0개 
+        {% else %}
+            {{ post.like_count }}개
+        {% endif %}
+     </span>
+</span>
+</div>
+<div>
+<!--싫어요 작성-->
+<span href="#" class="dislike" name ="{{post.name}}" value="Dislike"> 
+
+    {% comment %} 만약 유저가 좋아요를 눌렀다면 채운 하트로 변경 {% endcomment %}
+    {% if user in post.dislike_user_set.all %}
+        <div class="alt-service-icon">
+            <i class="fas fa-thumbs-down" id ="dislike-icon" style="color:red;"></i>
+         </div> 
+    {% comment %} 아니면 비워진 하트        {% endcomment %}
+    {% else %}
+
+        <div class="alt-service-icon">
+             <i class="fas fa-thumbs-down" id ="dislike-icon" style="color:red;"></i> 
+        </div>
+
+     {% endif %}
+
+     <span id="count-{{ post.id }}" class="alt-services-title font-alt"> 
+        싫어요 
+        {% if post.dislike_count == 0 %} 
+            0개 
+        {% else %}
+            {{ post.dislike_count }}개
+        {% endif %}
+     </span>
+</span>
+</div>
 <div>
     <form action="{%url 'main:create_comment' post.id%}" method="POST">
         {%csrf_token%}
@@ -43,4 +99,96 @@
 </div>
 
 
+<!-- 5. ajax 적용하기 -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- like -->
+<script>
+    $(".like").click(function(){
+        var pk = $(this).attr('name')
+        $.ajax({
+            url : "{% url 'main:like_toggle' post.pk %}",
+            data : {'pk':pk,'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            type:"POST",
+            dataType:"json",
+            
+            success: function(response){
+
+                if (response.like_count==null){
+                    alert("로그인이 필요합니다.");
+                    window.location.replace('/accounts/login/')
+                }
+                else{
+                    if (response.result == "like"){
+                        $('#like-icon').removeClass();
+                        $('#like-icon').addClass('fas fa-heart');
+                    }
+                    else{
+                        $('#like-icon').removeClass();
+                        $('#like-icon').addClass('far fa-heart');
+                    }
+
+                    $('#count-{{ post.id }}').html('좋아요 '+response.like_count+'개');
+                }
+            },
+
+            error: function(request, status, error){
+                alert("로그인이 필요합니다.")
+	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); 
+        	},
+         });
+    })
+ </script>
+
+<!-- 5. ajax 적용하기 -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- dislike -->
+<script>
+    $(".dislike").click(function(){
+        var pk = $(this).attr('name')
+        $.ajax({
+            url : "{% url 'main:dislike_toggle' post.pk %}",
+            data : {'pk':pk,'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            type:"POST",
+            dataType:"json",
+            
+            success: function(response){
+
+                if (response.dislike_count==null){
+                    alert("로그인이 필요합니다.");
+                    window.location.replace('/accounts/login/')
+                }
+                else{
+                    if (response.result == "dislike"){
+                        $('#dislike-icon').removeClass();
+                        $('#dislike-icon').addClass('fas fa-thumbs-down');
+                    }
+                    else{
+                        $('#dislike-icon').removeClass();
+                        $('#dislike-icon').addClass('fas fa-thumbs-down');
+                    }
+
+                    $('#count-{{ post.id }}').html('싫어요 '+response.dislike_count+'개');
+                }
+            },
+
+            error: function(request, status, error){
+                alert("로그인이 필요합니다.")
+	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); 
+        	},
+         });
+    })
+ </script>
+
+
+
 {% endblock %}
+
+<!--
+AJAX의 기본 틀
+$.ajax({
+    url // 클라이언트가 요청을 보낼 서버의 URL 주소
+    data //HTTP 요청과 함께 서버로 보낼 데이터
+    type  //HTTP 요청 방식(GET, POST)
+    dataType  //서버에서 보내줄 데이터의 타입(json)
+})
+-->
